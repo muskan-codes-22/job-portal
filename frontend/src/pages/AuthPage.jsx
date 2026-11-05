@@ -24,7 +24,7 @@ export default function AuthPage({ mode }) {
       if (isLogin) {
         await login({ email: form.email, password: form.password });
       } else {
-        await client.post('/api/auth/register', form);
+        await client.post('/auth/register', form);
         await login({ email: form.email, password: form.password });
       }
       navigate('/dashboard');
