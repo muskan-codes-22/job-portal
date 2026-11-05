@@ -4,19 +4,20 @@ import uploadToCloudinary from '../utils/uploadToCloudinary.js';
 
 export async function createApplication(req, res, next) {
   try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Please upload a resume to apply for this job' });
+    }
+
     const job = await Job.findOne({ _id: req.body.jobId, status: 'open' });
     if (!job) return res.status(404).json({ message: 'Open job not found' });
 
-    let resume;
-    if (req.file) {
-      const file = await uploadToCloudinary(
-        req.file.buffer,
-        'job-portal/resumes',
-        'raw',
-        req.file.mimetype
-      );
-      resume = { url: file.secure_url, publicId: file.public_id };
-    }
+    const file = await uploadToCloudinary(
+      req.file.buffer,
+      'job-portal/resumes',
+      'raw',
+      req.file.mimetype
+    );
+    const resume = { url: file.secure_url, publicId: file.public_id };
 
     const application = await Application.create({
       job: job._id,

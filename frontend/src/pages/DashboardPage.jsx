@@ -16,7 +16,7 @@ const emptyJobForm = {
 };
 
 export default function DashboardPage() {
-  const { user, demoLogin } = useAuth();
+  const { user } = useAuth();
 
   const [jobs, setJobs] = useState([]);
   const [editingJobId, setEditingJobId] = useState(null);
@@ -77,16 +77,6 @@ export default function DashboardPage() {
     setActionMessage('');
     setErrorMessage('');
 
-    // Ensure logged in as recruiter/admin
-    if (!user || user.role === 'applicant') {
-      try {
-        await demoLogin('recruiter');
-      } catch (err) {
-        setErrorMessage('Recruiter access required to post/edit jobs.');
-        return;
-      }
-    }
-
     setLoading(true);
     try {
       const payload = {
@@ -138,22 +128,6 @@ export default function DashboardPage() {
 
   return (
     <div className="management-dashboard">
-      {/* Optional demo helper banner if user is applicant */}
-      {user && user.role === 'applicant' && (
-        <div className="role-switch-banner">
-          <span>You are currently viewing as Applicant ({user.name}).</span>
-          <button
-            className="switch-role-btn"
-            onClick={async () => {
-              await demoLogin('recruiter');
-              loadRecruiterJobs();
-            }}
-          >
-            Switch to Recruiter Mode
-          </button>
-        </div>
-      )}
-
       {actionMessage && <div className="flash-banner success">{actionMessage}</div>}
       {errorMessage && <div className="flash-banner error-banner">{errorMessage}</div>}
 

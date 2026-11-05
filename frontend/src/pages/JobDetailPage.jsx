@@ -230,11 +230,12 @@ export default function JobDetailPage() {
               </div>
 
               <div className="form-group">
-                <label>Resume (PDF or DOCX, optional)</label>
+                <label>Resume (PDF or DOCX, required)</label>
                 <input
                   type="file"
                   accept=".pdf,.doc,.docx"
-                  onChange={(e) => setResumeFile(e.target.files[0])}
+                  required
+                  onChange={(e) => setResumeFile(e.target.files[0] || null)}
                 />
               </div>
 
@@ -259,4 +260,3 @@ export default function JobDetailPage() {
     </div>
   );
 }
-

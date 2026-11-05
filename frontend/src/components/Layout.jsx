@@ -20,12 +20,14 @@ export default function Layout({ children }) {
 
           {user ? (
             <>
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
-              >
-                {user.role === 'recruiter' ? 'Job Management' : 'Dashboard'}
-              </NavLink>
+              {['recruiter', 'admin'].includes(user.role) && (
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
+                >
+                  Job Management
+                </NavLink>
+              )}
               <NavLink
                 to="/profile"
                 className={({ isActive }) => (isActive ? 'nav-link active' : 'nav-link')}
